@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
 
 @Component({
@@ -6,42 +6,80 @@ import { FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
   templateUrl: './provide-numbers.component.html',
   styleUrls: ['./provide-numbers.component.scss']
 })
-export class ProvideNumbersComponent {
+export class ProvideNumbersComponent implements OnInit {
   form: FormGroup;
-  @Output() valid = new EventEmitter<{
-    status: boolean,
-    data: any
-  }>();
+
+  selectedRangeCount: number = 0;
+
+  @Output() formSubmitted = new EventEmitter<any>();
+  @Output() navigate = new EventEmitter<number>();
 
   // Regex pattern for UK phone numbers in the 1e16 format
   ukNumberPattern = /^\+(44)\d{9,13}$/;
 
   constructor(private fb: FormBuilder) {
+   
+  }
+  ngOnInit(): void {
     this.form = this.fb.group({
-      ranges: this.fb.array([this.createRange()])
+      ranges: this.fb.array(this.createRange())
     });
 
-    this.form.statusChanges.subscribe(status => {
-      this.valid.emit({status : status === 'VALID', data: this.form.value});
+    this.form.valueChanges.subscribe(value => {
+      this.selectedRangeCount = this.form.value.ranges.filter(range => range.selected).length;
     });
   }
 
-  get ranges(): FormArray {
+  get ranges() {
     return this.form.get('ranges') as FormArray;
   }
 
-  createRange(): FormGroup {
-    const group = this.fb.group({
+  createRange(): FormGroup[] {    
+    const groups = Array.from({ length: 5 }).map((_, index) => this.fb.group({
+      selected: [false],
+      id: [index + 1],
       rangeStart: ['', [Validators.required, Validators.pattern(this.ukNumberPattern)]],
       rangeEnd: ['', [Validators.required, Validators.pattern(this.ukNumberPattern)]],
       mainNumber: ['', [Validators.required, Validators.pattern(this.ukNumberPattern)]]
-    }, { validators: this.rangeValidator });
+    }, { validators: this.rangeValidator }));
 
-    group.get('rangeStart').valueChanges.subscribe(value => {
-      group.get('mainNumber').setValue(value, { emitEvent: false });
+    groups.forEach(group => {
+      group.get('rangeStart').valueChanges.subscribe(value => {
+        group.get('mainNumber').setValue(value, { emitEvent: false });
+      });
     });
+   
 
-    return group;
+    return groups;
+  }
+
+  addRange() {
+    this.ranges.push(this.fb.group({
+      selected: [false],
+      id: [this.ranges.length + 1],
+      rangeStart: ['', Validators.required, Validators.pattern(this.ukNumberPattern)],
+      rangeEnd: ['', Validators.required, , Validators.pattern(this.ukNumberPattern)],
+      mainNumber: ['', Validators.required, , Validators.pattern(this.ukNumberPattern)]
+    }));
+  }
+
+  removeSelectedRanges() {
+    this.ranges.controls = this.ranges.controls.filter(control => !control.value.selected);
+  }
+
+  reset() {
+    this.form.reset();
+  }
+
+  validate() {
+    if (this.form.valid) {
+      this.formSubmitted.emit(this.form.value);
+    }
+  }
+
+  navigateToStep2() {
+    this.formSubmitted.emit(this.form.value);
+    this.navigate.emit(2);
   }
 
   rangeValidator(group: FormGroup) {
@@ -60,9 +98,7 @@ export class ProvideNumbersComponent {
     return null;
   }
 
-  addRange() {
-    this.ranges.push(this.createRange());
-  }
+
 
   removeRange(index: number) {
     if (this.ranges.length > 1) {

@@ -1,1 +1,29 @@
-<p>customer-details works!</p>
+<!-- src/app/my-request/portin-customer-details/portin-customer-details.component.html -->
+<div>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>RangeStart</th>
+          <th>RangeEnd</th>
+          <th>MainNumber</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let range of data.ranges; let i = index">
+          <td>{{ range.id }}</td>
+          <td>{{ range.rangeStart }}</td>
+          <td>{{ range.rangeEnd }}</td>
+          <td>{{ range.mainNumber }}</td>
+          <td><button (click)="removeRow(range.id)">Delete</button></td>
+        </tr>
+      </tbody>
+    </table>
+    <div>
+      <button (click)="navigateBack.emit()">Previous</button>
+      <button>Validate</button>
+      <button>Porting</button>
+    </div>
+  </div>
+  

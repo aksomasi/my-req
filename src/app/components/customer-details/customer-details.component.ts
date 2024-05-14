@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-customer-details',
@@ -7,4 +7,12 @@ import { Component } from '@angular/core';
 })
 export class CustomerDetailsComponent {
 
+  @Input() data: any;
+  @Output() deleteRow = new EventEmitter<number>();
+  @Output() navigateBack = new EventEmitter<void>();
+  @Output() navigateNext = new EventEmitter<void>();
+
+  removeRow(id: number) {
+    this.deleteRow.emit(id);
+  }
 }

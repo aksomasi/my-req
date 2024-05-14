@@ -1,4 +1,4 @@
-<ngb-tabset [activeId]="activeTab.toString()">
+<!-- <ngb-tabset [activeId]="activeTab.toString()">
     <ngb-tab title="Provide Numbers" id="1">
         <ng-template ngbTabContent>
             <app-provide-numbers (valid)="setValid(0, $event)"></app-provide-numbers>
@@ -24,4 +24,24 @@
 <div class="d-flex justify-content-between mt-3">
     <button class="btn btn-secondary" (click)="previous()" [disabled]="activeTab <= 1">Previous</button>
     <button class="btn btn-primary" (click)="next()" [disabled]="!isNextEnabled()">Next</button>
-</div>
+</div> -->
+
+<!-- src/app/my-request/my-request.component.html -->
+<div>
+    <div>
+      Step {{currentStep}}/4
+    </div>
+    <div *ngIf="currentStep === 1">
+      <app-provide-numbers (formSubmitted)="updateFormData($event)" (navigate)="navigateToStep(2)"></app-provide-numbers>
+    </div>
+    <div *ngIf="currentStep === 2">
+      <app-customer-details [data]="formData" (deleteRow)="deleteRow($event)" (navigateBack)="navigateToStep(1)" (navigateNext)="navigateToStep(3)"></app-customer-details>
+    </div>
+    <div *ngIf="currentStep === 3">
+      <!-- <app-portin-details [data]="formData" (navigateBack)="navigateToStep(2)" (navigateNext)="navigateToStep(4)"></app-portin-details> -->
+    </div>
+    <div *ngIf="currentStep === 4">
+      <!-- <app-request-summary [data]="formData" (navigateBack)="navigateToStep(3)"></app-request-summary> -->
+    </div>
+  </div>
+  

@@ -1,0 +1,105 @@
+/* src/app/my-request/provide-numbers/provide-numbers.component.css */
+
+/* Container for the component */
+.component-container {
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+  }
+  
+  /* Header section */
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .header label {
+    font-weight: bold;
+    font-size: 1.2em;
+  }
+  
+  .header .actions {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .header .actions button {
+    padding: 5px 10px;
+    font-size: 0.9em;
+    cursor: pointer;
+  }
+  
+  /* Table styles */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+  }
+  
+  thead {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  thead th {
+    padding: 10px;
+    text-align: left;
+  }
+  
+  tbody td {
+    padding: 10px;
+    border: 1px solid #ddd;
+  }
+  
+  tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  
+  tbody tr:hover {
+    background-color: #ddd;
+  }
+  
+  input[type="text"] {
+    width: 100%;
+    padding: 5px;
+    box-sizing: border-box;
+  }
+  
+  input[type="checkbox"] {
+    margin: 0 auto;
+    display: block;
+  }
+  
+  button[type="button"] {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  
+  button[type="button"]:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Footer buttons */
+  .footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+  }
+  
+  .footer button {
+    padding: 10px 15px;
+    font-size: 1em;
+    cursor: pointer;
+  }
+  
+  .provide-numbers{
+    padding-left: 100px;
+    padding-right: 100px;
+  }

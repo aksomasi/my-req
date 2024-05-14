@@ -1,4 +1,4 @@
-<form [formGroup]="form">
+<!-- <form [formGroup]="form">
     <table class="table">
       <thead>
         <tr>
@@ -53,5 +53,68 @@
   
     
     <button type="button" class="btn btn-secondary" (click)="addRange()">Add More</button>
-  </form>
+  </form> -->
   
+  <!-- src/app/my-request/provide-numbers/provide-numbers.component.html -->
+<!-- src/app/my-request/provide-numbers/provide-numbers.component.html -->
+<!-- src/app/my-request/provide-numbers/provide-numbers.component.html -->
+<div [formGroup]="form" class="provide-numbers">
+  <div>
+    <label style="float: left;">Your placing {{ ranges?.length }} ranges</label>
+    <div style="float: right;">
+      <span>Selected: {{ selectedRangeCount }}</span>
+      <button [disabled]="selectedRangeCount === 0" class="btn btn-primary" (click)="removeSelectedRanges()">Remove selected range</button>
+      <button (click)="addRange()" class="btn btn-danger">Add RangeEnd</button>
+    </div>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th>Select</th>
+        <th>ID</th>
+        <th>RangeStart</th>
+        <th>RangeEnd</th>
+        <th>MainNumber</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody formArrayName="ranges">
+      <tr *ngFor="let range of ranges.controls; let i = index" [formGroupName]="i">
+        <td><input type="checkbox" formControlName="selected"></td>
+        <td>{{ range?.get('id')?.value }}</td>
+        <td>
+          <input type="text" formControlName="rangeStart">
+          <div *ngIf="isFieldInvalid('rangeStart', i)" class="text-danger">
+            Please enter a valid UK number (starting with +44 and up to 13 digits)
+          </div>
+        </td>
+        <td>
+          <input type="text" formControlName="rangeEnd">
+          <div *ngIf="isFieldInvalid('rangeEnd', i)" class="text-danger">
+            Please enter a valid UK number (starting with +44 and up to 13 digits)
+          </div>
+          <div *ngIf="isRangeEndLessThanRangeStart(i)" class="text-danger">
+            Range End should be equal to or greater than Range Start
+          </div>
+        </td>
+        <td>
+          <input type="text" formControlName="mainNumber">
+          <div *ngIf="isFieldInvalid('mainNumber', i)" class="text-danger">
+            Please enter a valid UK number (starting with +44 and up to 13 digits)
+          </div>
+          <div *ngIf="isMainNumberOutOfRange(i)" class="text-danger">
+            Main Number must be between Range Start and Range End
+          </div>
+        </td>
+        <td>
+          <!-- <button (click)="ranges.removeAt(i)">Delete</button> -->
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div style="text-align: right;">
+    <button (click)="reset()" class="btn btn-secondary">Reset</button>
+    <button [disabled]="!form.valid" (click)="validate()" class="btn btn-primary">Validate</button>
+    <button [disabled]="!form.valid" (click)="navigateToStep2()" class="btn btn-danger">Customer Details</button>
+  </div>
+</div>
